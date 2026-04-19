@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0F6E56">
+<title>AitkenTech Onboarding</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+:root{--teal:#4EC6C0;--teal-dk:#0F6E56;--teal-lt:#E1F5EE;--navy:#1A1A2E;--bg:#F4F6F5;--surface:#fff;--border:rgba(0,0,0,0.08);--text:#1A1A2E;--text2:#5A6472;--text3:#9BA3AD;--r:14px;--r-sm:8px;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:32px}
+.app-hdr{background:var(--navy);padding:52px 20px 24px}
+.app-hdr h1{color:#fff;font-size:26px;font-weight:600;letter-spacing:-.3px}
+.app-hdr p{color:rgba(255,255,255,.45);font-size:13px;margin-top:4px}
+.page{display:none;padding:16px}
+.page.on{display:block}
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:16px;margin-bottom:12px}
+.card-ttl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.hero{border-radius:var(--r);padding:20px;margin-bottom:12px;cursor:pointer;position:relative;overflow:hidden;border:none;width:100%;text-align:left;font-family:var(--font);display:flex;justify-content:space-between;align-items:center}
+.hero:active{opacity:.88}
+.hero.teal{background:var(--teal-dk)}.hero.done{background:#1D9E75}
+.hc-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px}
+.hc-ttl{font-size:18px;font-weight:600;color:#fff}
+.hc-sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px;line-height:1.4}
+.hc-arr{font-size:24px;color:rgba(255,255,255,.3);flex-shrink:0}
+.prog-bar{height:4px;background:var(--border);border-radius:99px;margin-bottom:8px;overflow:hidden}
+.prog-fill{height:100%;background:var(--teal-dk);border-radius:99px;transition:width .3s}
+.field{margin-bottom:14px;position:relative}
+.field label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.03em;display:block;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);font-size:15px;background:var(--bg);color:var(--text);-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.field textarea{min-height:70px;resize:vertical}
+.field .hint{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.4}
+.addr-drop{background:var(--surface);border:1.5px solid var(--teal);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);display:none;position:absolute;left:0;right:0;z-index:200;max-height:220px;overflow-y:auto}
+.addr-opt{padding:10px 13px;font-size:14px;color:var(--text);border-bottom:1px solid var(--border);cursor:pointer;line-height:1.4}
+.addr-opt:last-child{border-bottom:none}
+.addr-opt:active{background:var(--teal-lt)}
+.addr-opt b{font-weight:600;display:block}
+.addr-opt small{font-size:12px;color:var(--text3)}
+.btn{display:block;width:100%;padding:15px;border:none;border-radius:var(--r);font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-p{background:var(--teal-dk);color:#fff}.btn-p:active{background:#0a5541}
+.btn-s{background:transparent;color:var(--text2);border:1.5px solid var(--border);margin-top:8px}.btn-s:active{background:var(--bg)}
+.radio-grp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.radio-btn{padding:11px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;text-align:center;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);transition:all .12s;width:100%}
+.radio-btn.on{border-color:var(--teal);background:var(--teal-lt);color:var(--teal-dk)}
+.chk-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.chk-row:last-child{border-bottom:none}
+.chk-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:1px}
+.chk-box.on{background:var(--teal-dk);border-color:var(--teal-dk);color:#fff}
+.chk-lbl{font-size:13px;line-height:1.5;flex:1}
+.sig-wrap{border:2px dashed var(--teal);border-radius:var(--r);background:var(--surface);padding:4px;margin-bottom:10px}
+canvas{display:block;width:100%;touch-action:none;border-radius:10px}
+.contract-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;max-height:360px;overflow-y:auto}
+.contract-box h3{font-size:13px;font-weight:600;margin:16px 0 6px;color:var(--teal-dk)}
+.contract-box h3:first-child{margin-top:0}
+.contract-box p{font-size:13px;line-height:1.7;color:var(--text2);margin-bottom:8px}
+.contract-box .hi{background:var(--teal-lt);border-radius:6px;padding:8px 10px;margin:8px 0;font-size:13px;color:var(--teal-dk);font-weight:500}
+.success{text-align:center;padding:48px 20px}
+.suc-icon{font-size:56px;margin-bottom:16px}
+.suc-ttl{font-size:24px;font-weight:600;margin-bottom:8px}
+.suc-sub{font-size:15px;color:var(--text2);margin-bottom:32px;line-height:1.6}
+.pnav{display:flex;align-items:center;margin-bottom:20px}
+.back{background:none;border:none;cursor:pointer;font-size:22px;color:var(--text2);padding:0;margin-right:12px}
+.pnav h2{font-size:18px;font-weight:600}
+.tab-bar{display:flex;background:var(--surface);border-top:1px solid var(--border);position:sticky;bottom:0}
+.tab-btn{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:var(--font);font-size:10px;font-weight:500;color:var(--text3)}
+.tab-btn.on{color:var(--teal-dk)}
+.tab-icon{font-size:20px;line-height:1}
+.rec-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px}
+.rec-type{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:4px}
+.rec-name{font-size:15px;font-weight:600;margin-bottom:2px}
+.rec-sub{font-size:12px;color:var(--text3)}
+.empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="app-hdr">
+  <h1>AitkenTech</h1>
+  <p>New employee onboarding</p>
+</div>
+
+<!-- HOME -->
+<div class="page on" id="pg-home">
+  <div style="padding:8px 0 16px">
+    <p style="font-size:14px;color:var(--text2);line-height:1.6">Welcome to AitkenTech. Complete each section below. Everything is saved and emailed to admin@aitkentech.com as you go.</p>
+  </div>
+  <div id="home-sections"></div>
+</div>
+
+<!-- PERSONAL DETAILS -->
+<div class="page" id="pg-personal">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Personal details</h2></div>
+  <div class="card">
+    <div class="card-ttl">Your details</div>
+    <div class="field"><label>Full legal name</label><input type="text" id="p-name" placeholder="As per your ID"></div>
+    <div class="field"><label>Preferred name</label><input type="text" id="p-pref" placeholder="What you like to be called"></div>
+    <div class="field"><label>Date of birth</label><input type="date" id="p-dob"></div>
+    <div class="field"><label>Mobile</label><input type="tel" id="p-mob" placeholder="0400 000 000"></div>
+    <div class="field"><label>Personal email</label><input type="email" id="p-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Street address</label>
+      <input type="text" id="p-addr" placeholder="Start typing address..." autocomplete="off" oninput="aLookup('p-addr')">
+      <div class="addr-drop" id="p-addr-drop"></div>
+    </div>
+    <div class="field"><label>Suburb</label><input type="text" id="p-suburb" placeholder="Moruya"></div>
+    <div class="field"><label>State</label><input type="text" id="p-state" value="NSW"></div>
+    <div class="field"><label>Postcode</label><input type="text" id="p-post" placeholder="2537"></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Emergency contact</div>
+    <div class="field"><label>Full name</label><input type="text" id="ec-name" placeholder="Contact name"></div>
+    <div class="field"><label>Relationship</label><input type="text" id="ec-rel" placeholder="e.g. Parent, Partner"></div>
+    <div class="field"><label>Mobile</label><input type="tel" id="ec-mob" placeholder="0400 000 000"></div>
+    <div class="field"><label>Home / work phone</label><input type="tel" id="ec-home" placeholder="Optional"></div>
+  </div>
+  <button class="btn btn-p" onclick="savePersonal()">Save &amp; continue</button>
+</div>
+
+<!-- CONTRACT -->
+<div class="page" id="pg-contract">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Employment contract</h2></div>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6">Please read your employment contract carefully. Scroll through the full document before signing.</p>
+  <div class="contract-box" id="contract-text"></div>
+  <div class="card">
+    <div class="card-ttl">Employee declaration</div>
+    <div class="chk-row" onclick="tgDec(this)"><div class="chk-box"></div><div class="chk-lbl">I confirm I have read and understood this employment contract in full.</div></div>
+    <div class="chk-row" onclick="tgDec(this)"><div class="chk-box"></div><div class="chk-lbl">I understand my rights and obligations as an apprentice under the Electrical, Electronic and Communications Contracting Award 2020.</div></div>
+    <div class="chk-row" onclick="tgDec(this)"><div class="chk-box"></div><div class="chk-lbl">I have had the opportunity to ask questions about this contract before signing.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <div class="sig-wrap"><canvas id="ct-emp" height="120"></canvas></div>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Sign above with your finger</p>
+    <button class="btn btn-s" onclick="clrCanvas('ct-emp')">Clear</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Employer signature &#8212; Aaron Aitken</div>
+    <div class="sig-wrap"><canvas id="ct-aa" height="110"></canvas></div>
+    <button class="btn btn-s" onclick="clrCanvas('ct-aa')">Clear</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Parent / guardian signature (required &#8212; under 18)</div>
+    <div class="field"><label>Parent / guardian full name</label><input type="text" id="ct-parent" placeholder="Full name"></div>
+    <div class="field"><label>Relationship to apprentice</label><input type="text" id="ct-rel" placeholder="e.g. Mother, Father"></div>
+    <div class="sig-wrap"><canvas id="ct-par" height="110"></canvas></div>
+    <button class="btn btn-s" onclick="clrCanvas('ct-par')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveContract()">Save &amp; continue</button>
+</div>
+
+<!-- TAX / SUPER / BANK -->
+<div class="page" id="pg-compliance">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Tax, super &amp; bank</h2></div>
+  <div class="card">
+    <div class="card-ttl">Tax file number</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6">You must provide your TFN. Do this via myGov online (preferred) or complete the paper ATO form NAT 3092.</p>
+    <div class="field"><label>TFN declaration method</label>
+      <div class="radio-grp" id="rg-tfn">
+        <button class="radio-btn on" onclick="setR('rg-tfn',this)">myGov online</button>
+        <button class="radio-btn" onclick="setR('rg-tfn',this)">Paper form NAT 3092</button>
+      </div>
+    </div>
+    <div class="field"><label>Claim tax-free threshold?</label>
+      <div class="radio-grp" id="rg-thresh">
+        <button class="radio-btn on" onclick="setR('rg-thresh',this)">Yes &#8212; claim it</button>
+        <button class="radio-btn" onclick="setR('rg-thresh',this)">No &#8212; don't claim</button>
+      </div>
+      <div class="hint">Only claim the tax-free threshold with one employer. If this is your only job, choose Yes.</div>
+    </div>
+    <div class="field"><label>Do you have a HELP / study debt?</label>
+      <div class="radio-grp" id="rg-help">
+        <button class="radio-btn on" onclick="setR('rg-help',this)">No</button>
+        <button class="radio-btn" onclick="setR('rg-help',this)">Yes</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Superannuation</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6">AitkenTech contributes 11.5% of your ordinary time earnings to super. Your default fund is HOSTPLUS, but you may nominate a different fund.</p>
+    <div class="field"><label>Super fund preference</label>
+      <div class="radio-grp" id="rg-super">
+        <button class="radio-btn on" onclick="setR('rg-super',this);showSup(false)">Use HOSTPLUS (default)</button>
+        <button class="radio-btn" onclick="setR('rg-super',this);showSup(true)">My own fund</button>
+      </div>
+    </div>
+    <div id="sup-fields" style="display:none">
+      <div class="field"><label>Fund name</label><input type="text" id="sup-name" placeholder="e.g. Australian Super"></div>
+      <div class="field"><label>Fund ABN</label><input type="text" id="sup-abn"></div>
+      <div class="field"><label>USI (Unique Superannuation Identifier)</label><input type="text" id="sup-usi"></div>
+      <div class="field"><label>Your member number</label><input type="text" id="sup-mem"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Bank account for wages</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Wages are paid weekly by EFT.</p>
+    <div class="field"><label>Account name</label><input type="text" id="bk-name" placeholder="As per your bank account"></div>
+    <div class="field"><label>Bank name</label><input type="text" id="bk-bank" placeholder="e.g. Commonwealth Bank"></div>
+    <div class="field"><label>BSB</label><input type="text" id="bk-bsb" placeholder="000-000" maxlength="7"></div>
+    <div class="field"><label>Account number</label><input type="text" id="bk-acc"></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Licences &amp; qualifications</div>
+    <div class="field"><label>Driver's licence number</label><input type="text" id="lic-drv"></div>
+    <div class="field"><label>Licence class</label><input type="text" id="lic-cls" placeholder="e.g. C"></div>
+    <div class="field"><label>Licence expiry</label><input type="date" id="lic-exp"></div>
+    <div class="field"><label>White Card number (CPCCWHS1001)</label><input type="text" id="lic-wc"></div>
+    <div class="field"><label>White Card expiry</label><input type="date" id="lic-wce"></div>
+  </div>
+  <button class="btn btn-p" onclick="saveCompliance()">Save &amp; continue</button>
+</div>
+
+<!-- INDUCTION -->
+<div class="page" id="pg-induction">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>WHS induction</h2></div>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6">Aaron Aitken will go through each item with you. Tick each one as it's covered then both sign at the bottom.</p>
+  <div id="ind-checks"></div>
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">I confirm I have received this induction and understand my WHS obligations.</p>
+    <div class="sig-wrap"><canvas id="ind-emp" height="120"></canvas></div>
+    <button class="btn btn-s" onclick="clrCanvas('ind-emp')">Clear</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Inducted by &#8212; Aaron Aitken</div>
+    <div class="sig-wrap"><canvas id="ind-aa" height="110"></canvas></div>
+    <button class="btn btn-s" onclick="clrCanvas('ind-aa')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveInduction()">Complete induction</button>
+</div>
+
+<!-- RECORDS -->
+<div class="page" id="pg-records">
+  <div style="padding-bottom:12px">
+    <div style="font-size:22px;font-weight:600;margin-bottom:4px">Completed records</div>
+    <div style="font-size:14px;color:var(--text2)">All saved onboarding documents</div>
+  </div>
+  <div id="rec-list"></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="go('home')" id="tb-home"><span class="tab-icon">&#127968;</span>Home</button>
+  <button class="tab-btn" onclick="go('records')" id="tb-rec"><span class="tab-icon">&#128193;</span>Records</button>
+</div>
+
+<script>
+var EP = 'https://formspree.io/f/mykljpyp';
+
+var SECTIONS = [
+  {id:'personal', title:'Personal details',    sub:'Name, address, emergency contact',    icon:'&#128100;', page:'personal'},
+  {id:'contract', title:'Employment contract', sub:'Read and sign your contract',          icon:'&#128196;', page:'contract'},
+  {id:'compliance',title:'Tax, super & bank',  sub:'TFN, superannuation, bank account',   icon:'&#128176;', page:'compliance'},
+  {id:'induction',title:'WHS induction',       sub:'Safety topics sign-off',              icon:'&#9888;&#65039;', page:'induction'}
+];
+
+var IND = {
+  'Emergency procedures':[
+    'Emergency number: 000',
+    'Location of first aid kit (work vehicle)',
+    'Nearest hospital: Moruya District Hospital — (02) 4474 1888',
+    'Muster point identified on each site',
+    'Procedure if someone is injured — call 000, do not move injured person, call Aaron Aitken'
+  ],
+  'Site hazards & rules':[
+    'Overhead powerlines — location and clearance distances',
+    'Underground services — Dial Before You Dig explained',
+    'Asbestos identification and stop work procedure',
+    'No smoking, alcohol, or drugs on site — zero tolerance',
+    'Visitors must be accompanied at all times'
+  ],
+  'Electrical safety':[
+    'All electrical work by licensed persons only',
+    'Lock Out / Tag Out (LOTO) procedure explained',
+    'Do not touch equipment you have not been asked to work on',
+    'Report damaged tools or equipment immediately',
+    'RCD protection required for all portable tools',
+    'Relevant SWMS read and signed before each job'
+  ],
+  'PPE & WHS obligations':[
+    'Mandatory PPE for different tasks explained',
+    'Right to cease unsafe work (WHS Act s.83)',
+    'Obligation to report hazards and near misses',
+    'Obligation to follow reasonable WHS instructions',
+    'Right to raise WHS issues without fear of reprisal'
+  ],
+  'Apprentice-specific':[
+    'Tasks Austin may NOT do unsupervised (live electrical work)',
+    'Always ask Aaron if unsure about a task — never guess',
+    'Right to refuse unsafe tasks without consequence',
+    'TAFE attendance obligations and current schedule confirmed',
+    'Hours averaging arrangement explained (4-week cycle)'
+  ]
+};
+
+var CONTRACT = [
+  {h:'1. Parties to this agreement', b:'<p><strong>Employer:</strong> Aitken Technology Solutions PTY LTD (AitkenTech)<br>ABN: 96 615 473 464 | Licence: 366823C<br>72 Malabar Drive, Moruya NSW 2537<br>Aaron Aitken — 0489 902 391 — admin@aitkentech.com</p><p><strong>Employee:</strong> Austin Clarke | DOB: 09 May 2009<br>24 Guthaga Lane, Moruya NSW 2537 | Training Contract ID: 4325681</p>'},
+  {h:'2. Nature of employment', b:'<div class="hi">Full-Time Apprenticeship — transitioning from SBAT<br>Commencement: 21 April 2026 &rarr; Completion: 21 April 2030</div><p>Certificate III in Electrotechnology (UEE30820) via NECA Training LTD (RTO ID: 91632). Governed by the Electrical, Electronic and Communications Contracting Award 2020.</p>'},
+  {h:'3. Hours of work', b:'<div class="hi">38 hours per week averaged over a 4-week cycle (max 152 hrs/cycle)<br>Mon&ndash;Fri &middot; 0700&ndash;1530 &middot; 30 min unpaid meal break</div><p>Hours may be averaged over 4 consecutive weeks per Award clause 13.3. Maximum 10 ordinary hours per day. Overtime rates apply beyond this. Both parties agree to this arrangement by signing this contract.</p>'},
+  {h:'4. Remuneration', b:'<div class="hi">$15.67/hr — Junior Apprentice, 1st Year, has not completed Year 12<br>Weekly EFT &middot; Super: 11.5% to HOSTPLUS (832777357)</div><p>Pay rates reviewed annually in line with Award variations each July. Rate increases at each year-of-apprenticeship milestone.</p>'},
+  {h:'5. Training obligations', b:'<p><strong>Employer:</strong> Provide meaningful on-the-job training. Release Austin to attend NECA Training LTD for off-the-job training. Pay all wages including TAFE days. Ensure adequate supervision by a licensed electrician at all times.</p><p><strong>Apprentice:</strong> Attend all TAFE/RTO training. Apply diligently to learning the trade. Comply with all workplace policies and safety requirements. Maintain satisfactory progress toward qualification.</p>'},
+  {h:'6. Leave entitlements', b:'<p>Annual leave: 4 weeks/year. Personal/carer\'s leave: 10 days/year. Compassionate leave: 2 days/occasion. Public holidays: all NSW gazetted holidays. Long service leave: per NSW Long Service Leave Act 1955. Annual leave loading: 17.5%.</p>'},
+  {h:'7&ndash;10. Tools, travel, WHS &amp; conduct', b:'<p>Employer provides all tools, equipment and PPE. Tool allowance paid per Award. Travel expenses reimbursed per Award. Austin must comply with all WHS obligations under the NSW WHS Act 2011 and all AitkenTech policies, procedures and SWMS documents.</p><p>Professional conduct at all times. No alcohol or drugs at work. Maintaining confidentiality of client information.</p>'},
+  {h:'11. Probationary period', b:'<p>First 3 months: probationary period. Either party may terminate with 1 week\'s written notice. This does not affect rights under the Training Contract, which must be varied or cancelled through NSW Training Services.</p>'},
+  {h:'12&ndash;15. Termination, disputes &amp; governing law', b:'<p>Notice periods per NES: &lt;1 year = 1 week; 1&ndash;3 years = 2 weeks; 3&ndash;5 years = 3 weeks; 5+ years = 4 weeks. Additional 1 week required while Austin is under 18.</p><p>Disputes first raised directly with Aaron Aitken. If unresolved, referred to the Fair Work Commission. Governed by the laws of NSW and Commonwealth of Australia.</p>'}
+];
+
+var state = {done:{}, indChks:{}, recs:[]};
+try{state.recs=JSON.parse(localStorage.getItem('at_ob_r')||'[]');}catch(e){}
+try{state.done=JSON.parse(localStorage.getItem('at_ob_d')||'{}');}catch(e){}
+
+function sv(){
+  try{localStorage.setItem('at_ob_r',JSON.stringify(state.recs));localStorage.setItem('at_ob_d',JSON.stringify(state.done));}catch(e){}
+}
+
+function post(data){
+  fetch(EP,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).catch(function(){});
+}
+
+function fd(d){
+  if(!d)return'—';
+  var p=d.split('-');var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(p[2])+' '+m[parseInt(p[1])-1]+' '+p[0];
+}
+
+function go(pg){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg-'+pg).classList.add('on');
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});
+  var m={home:'tb-home',records:'tb-rec'};
+  if(m[pg])document.getElementById(m[pg]).classList.add('on');
+  if(pg==='home')renderHome();
+  if(pg==='records')renderRecs();
+  if(pg==='contract')renderContract();
+  if(pg==='induction')renderInduction();
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  var done=Object.keys(state.done).length;
+  var total=SECTIONS.length;
+  document.getElementById('home-sections').innerHTML=
+    '<div class="card" style="margin-bottom:16px">'
+    +'<div class="card-ttl">Progress &mdash; '+done+' of '+total+' complete</div>'
+    +'<div class="prog-bar"><div class="prog-fill" style="width:'+Math.round(done/total*100)+'%"></div></div>'
+    +'<p style="font-size:13px;color:var(--text2)">Complete all sections to finish your onboarding.</p>'
+    +'</div>'
+    +SECTIONS.map(function(s){
+      var isDone=state.done[s.id];
+      return'<button class="hero '+(isDone?'done':'teal')+'" onclick="go(\''+s.page+'\')">'
+        +'<div><div class="hc-lbl">'+s.icon+' '+(isDone?'Complete':'To do')+'</div>'
+        +'<div class="hc-ttl">'+s.title+'</div>'
+        +'<div class="hc-sub">'+s.sub+'</div></div>'
+        +'<span class="hc-arr">'+(isDone?'&#10003;':'&#8250;')+'</span>'
+        +'</button>';
+    }).join('');
+}
+
+function renderContract(){
+  document.getElementById('contract-text').innerHTML=CONTRACT.map(function(s){
+    return'<h3>'+s.h+'</h3>'+s.b;
+  }).join('');
+  initCanvas('ct-emp');initCanvas('ct-aa');initCanvas('ct-par');
+}
+
+function tgDec(row){
+  var box=row.querySelector('.chk-box');
+  var on=box.classList.toggle('on');
+  box.textContent=on?'&#10003;':'';
+}
+
+function renderInduction(){
+  document.getElementById('ind-checks').innerHTML=Object.keys(IND).map(function(sec){
+    var items=IND[sec];
+    return'<div class="card"><div class="card-ttl">'+sec+'</div>'
+      +items.map(function(item,i){
+        var k=sec+i;
+        return'<div class="chk-row" onclick="tgInd(\''+k+'\',this)"><div class="chk-box" id="ic-'+k+'"></div><div class="chk-lbl">'+item+'</div></div>';
+      }).join('')+'</div>';
+  }).join('');
+  initCanvas('ind-emp');initCanvas('ind-aa');
+}
+
+function tgInd(k,row){
+  state.indChks[k]=!state.indChks[k];
+  var b=document.getElementById('ic-'+k);
+  if(state.indChks[k]){b.classList.add('on');b.innerHTML='&#10003;';}
+  else{b.classList.remove('on');b.innerHTML='';}
+}
+
+function setR(gid,btn){
+  document.querySelectorAll('#'+gid+' .radio-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+
+function showSup(show){document.getElementById('sup-fields').style.display=show?'block':'none';}
+
+function savePersonal(){
+  var rec={
+    section:'personal',ts:Date.now(),
+    name:document.getElementById('p-name').value||'—',
+    pref:document.getElementById('p-pref').value||'—',
+    dob:document.getElementById('p-dob').value,
+    mobile:document.getElementById('p-mob').value||'—',
+    email:document.getElementById('p-email').value||'—',
+    addr:(document.getElementById('p-addr').value||'—')+', '+(document.getElementById('p-suburb').value||'')+' '+(document.getElementById('p-state').value||'')+' '+(document.getElementById('p-post').value||''),
+    ec_name:document.getElementById('ec-name').value||'—',
+    ec_rel:document.getElementById('ec-rel').value||'—',
+    ec_mob:document.getElementById('ec-mob').value||'—',
+    ec_home:document.getElementById('ec-home').value||'—'
+  };
+  state.recs.unshift(rec);state.done['personal']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — Personal Details: '+rec.name,
+    form_type:'Onboarding — Personal & Emergency Contact Details',
+    employee_name:rec.name,
+    preferred_name:rec.pref,
+    date_of_birth:fd(rec.dob),
+    mobile:rec.mobile,
+    email:rec.email,
+    address:rec.addr,
+    emergency_contact_name:rec.ec_name,
+    emergency_contact_relationship:rec.ec_rel,
+    emergency_contact_mobile:rec.ec_mob,
+    emergency_contact_home:rec.ec_home,
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('personal','Personal details saved and emailed to AitkenTech.');
+}
+
+function saveContract(){
+  var parent=document.getElementById('ct-parent').value||'—';
+  var rel=document.getElementById('ct-rel').value||'—';
+  var decks=document.querySelectorAll('#pg-contract .chk-box');
+  var allDeclared=Array.from(decks).every(function(b){return b.classList.contains('on');});
+  var rec={section:'contract',ts:Date.now(),parent:parent,rel:rel,allDeclared:allDeclared};
+  state.recs.unshift(rec);state.done['contract']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — Contract Signed: Austin Clarke',
+    form_type:'Onboarding — Employment Contract Signed',
+    employee_name:'Austin Clarke',
+    training_contract_id:'4325681',
+    commencement_date:'21 April 2026',
+    expected_completion:'21 April 2030',
+    pay_rate:'$15.67/hr — Junior Apprentice 1st Year (has not completed Year 12)',
+    hours:'38/week averaged over 4-week cycle (Mon-Fri 0700-1530)',
+    superannuation:'11.5% to HOSTPLUS (832777357)',
+    all_declarations_ticked:allDeclared?'Yes':'No',
+    parent_guardian_name:parent,
+    parent_guardian_relationship:rel,
+    employee_signed:'Yes',
+    employer_signed:'Yes (Aaron Aitken)',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('contract','Employment contract signed and emailed to AitkenTech.');
+}
+
+function saveCompliance(){
+  var tfn=document.querySelector('#rg-tfn .radio-btn.on');
+  var thresh=document.querySelector('#rg-thresh .radio-btn.on');
+  var help=document.querySelector('#rg-help .radio-btn.on');
+  var sup=document.querySelector('#rg-super .radio-btn.on');
+  var rec={
+    section:'compliance',ts:Date.now(),
+    tfnMethod:tfn?tfn.textContent:'myGov online',
+    thresh:thresh?thresh.textContent:'Yes',
+    superChoice:sup?sup.textContent:'HOSTPLUS (default)',
+    bank:document.getElementById('bk-bank').value||'—',
+    bsb:document.getElementById('bk-bsb').value||'—',
+    acc:document.getElementById('bk-acc').value||'—',
+    drv:document.getElementById('lic-drv').value||'—',
+    white:document.getElementById('lic-wc').value||'—'
+  };
+  state.recs.unshift(rec);state.done['compliance']=true;sv();
+  var accNum=rec.acc!=='—'&&rec.acc.length>4?rec.acc.slice(0,-4).replace(/./g,'*')+rec.acc.slice(-4):rec.acc;
+  post({
+    _subject:'AitkenTech Onboarding — Tax, Super & Bank: Austin Clarke',
+    form_type:'Onboarding — Tax, Superannuation & Bank Details',
+    employee_name:'Austin Clarke',
+    tfn_declaration_method:rec.tfnMethod,
+    tax_free_threshold_claimed:rec.thresh,
+    help_debt:help?help.textContent:'No',
+    super_fund_choice:rec.superChoice,
+    super_fund_name:document.getElementById('sup-name').value||'HOSTPLUS (default)',
+    super_fund_abn:document.getElementById('sup-abn').value||'—',
+    super_usi:document.getElementById('sup-usi').value||'—',
+    super_member_number:document.getElementById('sup-mem').value||'—',
+    bank_account_name:document.getElementById('bk-name').value||'—',
+    bank_name:rec.bank,
+    bsb:rec.bsb,
+    account_number_masked:accNum,
+    drivers_licence:rec.drv,
+    licence_class:document.getElementById('lic-cls').value||'—',
+    licence_expiry:fd(document.getElementById('lic-exp').value),
+    white_card_number:rec.white,
+    white_card_expiry:fd(document.getElementById('lic-wce').value),
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('compliance','Tax, super and bank details saved and emailed to AitkenTech.');
+}
+
+function saveInduction(){
+  var total=Object.values(IND).reduce(function(a,v){return a+v.length;},0);
+  var checked=Object.values(state.indChks).filter(Boolean).length;
+  var rec={section:'induction',ts:Date.now(),checked:checked,total:total};
+  state.recs.unshift(rec);state.done['induction']=true;sv();
+  var detail=Object.keys(IND).map(function(sec,si){
+    return sec+':\n'+IND[sec].map(function(item,i){
+      return(state.indChks[sec+i]?'✓ ':'✗ ')+item;
+    }).join('\n');
+  }).join('\n\n');
+  post({
+    _subject:'AitkenTech Onboarding — WHS Induction Complete: Austin Clarke',
+    form_type:'Onboarding — WHS Site Induction',
+    employee_name:'Austin Clarke',
+    inducted_by:'Aaron Aitken',
+    date:new Date().toLocaleDateString('en-AU'),
+    items_covered:checked+' of '+total,
+    induction_detail:detail,
+    employee_signed:'Yes',
+    employer_signed:'Yes (Aaron Aitken)',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('induction','WHS induction completed and emailed to AitkenTech.');
+}
+
+function showSuccess(section, msg){
+  document.getElementById('pg-'+section).innerHTML=
+    '<div class="success">'
+    +'<div class="suc-icon">&#9989;</div>'
+    +'<div class="suc-ttl">Saved!</div>'
+    +'<div class="suc-sub">'+msg+'</div>'
+    +'<button class="btn btn-p" onclick="go(\'home\')">Back to home</button>'
+    +'<button class="btn btn-s" onclick="go(\'records\')">View records</button>'
+    +'</div>';
+  window.scrollTo(0,0);
+}
+
+function renderRecs(){
+  var el=document.getElementById('rec-list');
+  if(!state.recs.length){el.innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px">&#128193;</div>No records yet. Complete the onboarding steps to see them here.</div>';return;}
+  var lb={personal:'Personal details',contract:'Employment contract',compliance:'Tax, super & bank',induction:'WHS induction'};
+  el.innerHTML=state.recs.map(function(r){
+    var d=new Date(r.ts).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    var detail='';
+    if(r.section==='personal')detail=r.name;
+    if(r.section==='contract')detail='Parent/guardian: '+r.parent;
+    if(r.section==='compliance')detail='Bank: '+r.bank+' | Super: '+r.superChoice;
+    if(r.section==='induction')detail=r.checked+'/'+r.total+' items covered';
+    return'<div class="rec-item"><div class="rec-type">'+lb[r.section]+'</div><div class="rec-name">'+detail+'</div><div class="rec-sub">Saved '+d+'</div></div>';
+  }).join('');
+}
+
+function initCanvas(id){
+  var c=document.getElementById(id);
+  if(!c)return;
+  c.width=c.offsetWidth||320;
+  sCanvas(c);
+}
+
+function sCanvas(c){
+  var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.strokeStyle='#1A1A2E';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  var dr=false,lx,ly;
+  function pos(e){var r=c.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return[t.clientX-r.left,t.clientY-r.top];}
+  c.onpointerdown=function(e){dr=true;var p=pos(e);lx=p[0];ly=p[1];c.setPointerCapture(e.pointerId);};
+  c.onpointermove=function(e){if(!dr)return;var p=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p[0],p[1]);ctx.stroke();lx=p[0];ly=p[1];};
+  c.onpointerup=function(){dr=false;};
+  c.onpointerleave=function(){dr=false;};
+}
+
+function clrCanvas(id){var c=document.getElementById(id);c.width=c.offsetWidth||320;sCanvas(c);}
+
+var aT=null;
+function aLookup(fid){
+  var inp=document.getElementById(fid);
+  var drop=document.getElementById(fid+'-drop');
+  var q=inp.value.trim();
+  drop.style.display='none';drop.innerHTML='';
+  if(q.length<4)return;
+  clearTimeout(aT);
+  aT=setTimeout(function(){
+    fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=au&q='+encodeURIComponent(q))
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data||!data.length)return;
+        drop.innerHTML=data.map(function(r){
+          var a=r.address||{};
+          var num=a.house_number||'';var road=a.road||'';
+          var main=(num&&road)?num+' '+road:road||r.display_name.split(',')[0];
+          var suburb=a.suburb||a.town||a.city||a.village||a.municipality||'';
+          var state2=a.state||'';var post=a.postcode||'';
+          var sub=[suburb,state2,post].filter(Boolean).join(' ');
+          var full=sub?main+', '+sub:main;
+          return'<div class="addr-opt" data-val="'+full.replace(/"/g,'&quot;')+'" onclick="aPick(\''+fid+'\',this)"><b>'+main+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</div>';
+        }).join('');
+        drop.style.display='block';
+      })
+      .catch(function(){});
+  },600);
+}
+function aPick(fid,el){document.getElementById(fid).value=el.getAttribute('data-val');document.getElementById(fid+'-drop').style.display='none';}
+document.addEventListener('click',function(e){document.querySelectorAll('.addr-drop').forEach(function(d){if(d.style.display==='block'&&!d.parentElement.contains(e.target))d.style.display='none';});});
+
+renderHome();
+</script>
+</body>
+</html>
