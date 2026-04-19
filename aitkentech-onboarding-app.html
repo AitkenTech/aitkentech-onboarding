@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0F6E56">
+<title>AitkenTech Onboarding</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+:root{--teal:#4EC6C0;--teal-dk:#0F6E56;--teal-lt:#E1F5EE;--navy:#1A1A2E;--bg:#F4F6F5;--surface:#fff;--border:rgba(0,0,0,0.08);--text:#1A1A2E;--text2:#5A6472;--text3:#9BA3AD;--r:14px;--r-sm:8px;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:32px}
+.app-hdr{background:var(--navy);padding:52px 20px 24px}
+.app-hdr h1{color:#fff;font-size:26px;font-weight:600;letter-spacing:-.3px}
+.app-hdr p{color:rgba(255,255,255,.45);font-size:13px;margin-top:4px}
+.page{display:none;padding:16px}
+.page.on{display:block}
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:16px;margin-bottom:12px}
+.card-ttl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.hero{border-radius:var(--r);padding:20px;margin-bottom:12px;cursor:pointer;position:relative;overflow:hidden;border:none;width:100%;text-align:left;font-family:var(--font);display:flex;justify-content:space-between;align-items:center}
+.hero:active{opacity:.88}
+.hero.teal{background:var(--teal-dk)}.hero.done{background:#1D9E75}.hero.navy{background:var(--navy)}
+.hc-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px}
+.hc-ttl{font-size:18px;font-weight:600;color:#fff}
+.hc-sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px;line-height:1.4}
+.hc-arr{font-size:24px;color:rgba(255,255,255,.3);flex-shrink:0;margin-left:12px}
+.prog-bar{height:4px;background:var(--border);border-radius:99px;margin-bottom:8px;overflow:hidden}
+.prog-fill{height:100%;background:var(--teal-dk);border-radius:99px;transition:width .3s}
+.field{margin-bottom:14px;position:relative}
+.field label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.03em;display:block;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font);font-size:15px;background:var(--bg);color:var(--text);-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.field textarea{min-height:70px;resize:vertical}
+.field .hint{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.4}
+.addr-drop{background:var(--surface);border:1.5px solid var(--teal);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);display:none;position:absolute;left:0;right:0;z-index:200;max-height:220px;overflow-y:auto}
+.addr-opt{padding:10px 13px;font-size:14px;color:var(--text);border-bottom:1px solid var(--border);cursor:pointer;line-height:1.4}
+.addr-opt:last-child{border-bottom:none}
+.addr-opt:active{background:var(--teal-lt)}
+.addr-opt b{font-weight:600;display:block}
+.addr-opt small{font-size:12px;color:var(--text3)}
+.btn{display:block;width:100%;padding:15px;border:none;border-radius:var(--r);font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-p{background:var(--teal-dk);color:#fff}.btn-p:active{background:#0a5541}
+.btn-s{background:transparent;color:var(--text2);border:1.5px solid var(--border);margin-top:8px}.btn-s:active{background:var(--bg)}
+.chk-row{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.chk-row:last-child{border-bottom:none}
+.chk-box{width:24px;height:24px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:1px;transition:all .12s}
+.chk-box.on{background:var(--teal-dk);border-color:var(--teal-dk);color:#fff}
+.chk-lbl{font-size:13px;line-height:1.5;flex:1;color:var(--text)}
+.chk-lbl.done{color:var(--text3);text-decoration:line-through}
+.sig-wrap{border:2px dashed var(--teal);border-radius:var(--r);background:var(--surface);padding:4px;margin-bottom:10px}
+canvas{display:block;width:100%;touch-action:none;border-radius:10px}
+.info-box{background:var(--teal-lt);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--teal-dk);line-height:1.6}
+.info-box strong{font-weight:600}
+.warn-box{background:#FEF0EF;border:1px solid #FBBCBA;border-radius:var(--r-sm);padding:12px 14px;margin-bottom:12px;font-size:13px;color:#7A0000;line-height:1.6}
+.success{text-align:center;padding:48px 20px}
+.suc-icon{font-size:56px;margin-bottom:16px}
+.suc-ttl{font-size:24px;font-weight:600;margin-bottom:8px}
+.suc-sub{font-size:15px;color:var(--text2);margin-bottom:32px;line-height:1.6}
+.pnav{display:flex;align-items:center;margin-bottom:20px}
+.back{background:none;border:none;cursor:pointer;font-size:22px;color:var(--text2);padding:0;margin-right:12px}
+.pnav h2{font-size:18px;font-weight:600}
+.sh{font-size:20px;font-weight:600;margin-bottom:4px}
+.ss{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.tab-bar{display:flex;background:var(--surface);border-top:1px solid var(--border);position:sticky;bottom:0;z-index:100}
+.tab-btn{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:var(--font);font-size:10px;font-weight:500;color:var(--text3)}
+.tab-btn.on{color:var(--teal-dk)}
+.tab-icon{font-size:20px;line-height:1}
+.rec-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px}
+.rec-type{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:4px}
+.rec-name{font-size:15px;font-weight:600;margin-bottom:2px}
+.rec-sub{font-size:12px;color:var(--text3)}
+.empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px}
+.paper-box{background:var(--navy);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.paper-box h3{color:#fff;font-size:15px;font-weight:600;margin-bottom:8px}
+.paper-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.paper-item:last-child{border-bottom:none}
+.paper-icon{font-size:18px;flex-shrink:0}
+.paper-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.4}
+.paper-text strong{color:#fff;font-weight:500;display:block}
+</style>
+</head>
+<body>
+
+<div class="app-hdr">
+  <h1>AitkenTech</h1>
+  <p>Day one onboarding &#8212; Austin Clarke</p>
+</div>
+
+<!-- HOME -->
+<div class="page on" id="pg-home">
+  <div style="padding:8px 0 16px">
+    <p style="font-size:14px;color:var(--text2);line-height:1.6">Welcome Austin. Work through each section with Aaron today. The paper documents will be signed separately &#8212; this app covers your digital induction and acknowledgements.</p>
+  </div>
+  <div id="home-sections"></div>
+
+  <div class="paper-box">
+    <h3>&#128196; Paper documents to sign today</h3>
+    <div class="paper-item"><span class="paper-icon">&#9989;</span><div class="paper-text"><strong>Employment Contract</strong>Sign in person with Aaron and parent/guardian</div></div>
+    <div class="paper-item"><span class="paper-icon">&#9989;</span><div class="paper-text"><strong>ATO Tax File Number Declaration (NAT 3092)</strong>Complete paper form and return to Aaron</div></div>
+    <div class="paper-item"><span class="paper-icon">&#9989;</span><div class="paper-text"><strong>Super Standard Choice Form (NAT 13080)</strong>Complete if choosing your own super fund</div></div>
+    <div class="paper-item"><span class="paper-icon">&#9989;</span><div class="paper-text"><strong>Bank Account Details</strong>Provide your BSB and account number to Aaron</div></div>
+  </div>
+</div>
+
+<!-- PERSONAL DETAILS -->
+<div class="page" id="pg-personal">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Personal details</h2></div>
+  <div class="ss">Basic details we need on file for you.</div>
+  <div class="card">
+    <div class="card-ttl">Your details</div>
+    <div class="field"><label>Full legal name</label><input type="text" id="p-name" placeholder="As per your ID"></div>
+    <div class="field"><label>Preferred name</label><input type="text" id="p-pref" placeholder="What you like to be called"></div>
+    <div class="field"><label>Date of birth</label><input type="date" id="p-dob"></div>
+    <div class="field"><label>Mobile</label><input type="tel" id="p-mob" placeholder="0400 000 000"></div>
+    <div class="field"><label>Personal email</label><input type="email" id="p-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Home address</label>
+      <input type="text" id="p-addr" placeholder="Start typing address..." autocomplete="off" oninput="aLookup('p-addr')">
+      <div class="addr-drop" id="p-addr-drop"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Emergency contact</div>
+    <div class="field"><label>Full name</label><input type="text" id="ec-name" placeholder="Contact name"></div>
+    <div class="field"><label>Relationship</label><input type="text" id="ec-rel" placeholder="e.g. Parent, Partner"></div>
+    <div class="field"><label>Mobile</label><input type="tel" id="ec-mob" placeholder="0400 000 000"></div>
+    <div class="field"><label>Home / work phone (optional)</label><input type="tel" id="ec-home"></div>
+  </div>
+  <button class="btn btn-p" onclick="savePersonal()">Save &amp; continue</button>
+</div>
+
+<!-- WHS INDUCTION -->
+<div class="page" id="pg-induction">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>WHS induction</h2></div>
+  <div class="info-box"><strong>Aaron &#8212; go through each item out loud.</strong> Austin ticks each one as it is covered. Both sign at the bottom when complete.</div>
+  <div id="ind-checks"></div>
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">I confirm I have received this WHS induction, that the above topics have been explained to me, and that I understand my health and safety obligations while working with AitkenTech.</p>
+    <div class="sig-wrap"><canvas id="ind-emp" height="120"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Austin Clarke &#8212; sign above</p>
+    <button class="btn btn-s" onclick="clrCanvas('ind-emp')">Clear</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">Inducted by &#8212; Aaron Aitken</div>
+    <div class="sig-wrap"><canvas id="ind-aa" height="110"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Aaron Aitken &#8212; Director / Supervising Electrician</p>
+    <button class="btn btn-s" onclick="clrCanvas('ind-aa')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveInduction()">Complete induction</button>
+</div>
+
+<!-- CODE OF CONDUCT -->
+<div class="page" id="pg-conduct">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Code of conduct</h2></div>
+  <div class="ss">Read through each item. Tick to confirm you understand and agree.</div>
+  <div class="card" id="conduct-checks"></div>
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">I confirm I have read and understood AitkenTech's code of conduct and agree to conduct myself in accordance with these standards.</p>
+    <div class="sig-wrap"><canvas id="coc-emp" height="120"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Austin Clarke &#8212; sign above</p>
+    <button class="btn btn-s" onclick="clrCanvas('coc-emp')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveConduct()">Save &amp; continue</button>
+</div>
+
+<!-- LEAVE & ENTITLEMENTS -->
+<div class="page" id="pg-leave">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Leave &amp; entitlements</h2></div>
+  <div class="ss">Your entitlements as a full-time apprentice under the Electrical, Electronic and Communications Contracting Award 2020.</div>
+
+  <div class="card">
+    <div class="card-ttl">Leave entitlements</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Annual leave</span><strong style="color:var(--text)">4 weeks per year</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Personal / carer's leave</span><strong style="color:var(--text)">10 days per year</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Compassionate leave</span><strong style="color:var(--text)">2 days per occasion</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Public holidays</span><strong style="color:var(--text)">All NSW holidays</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Annual leave loading</span><strong style="color:var(--text)">17.5%</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Your pay &amp; hours</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Pay rate</span><strong style="color:var(--text)">$15.67/hr</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Pay frequency</span><strong style="color:var(--text)">Weekly (EFT)</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Ordinary hours</span><strong style="color:var(--text)">38 hrs/week</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Standard hours</span><strong style="color:var(--text)">Mon&#8211;Fri 0700&#8211;1530</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>Meal break</span><strong style="color:var(--text)">30 min unpaid</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Superannuation</span><strong style="color:var(--text)">11.5% (HOSTPLUS)</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Your rights</div>
+    <div class="info-box" style="margin-bottom:0">
+      You have the right to:<br>
+      &#8226; A safe workplace free from discrimination and harassment<br>
+      &#8226; Cease unsafe work without fear of reprisal (WHS Act s.83)<br>
+      &#8226; Raise WHS issues without negative consequences<br>
+      &#8226; Be paid correctly and on time<br>
+      &#8226; Contact the Fair Work Ombudsman: 13 13 94<br>
+      &#8226; Contact Safe Work NSW: 13 10 50
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">TAFE &amp; training</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7">Your apprenticeship training is through <strong>NECA Training LTD (RTO 91632)</strong>. You are required to attend all scheduled TAFE/RTO sessions. You will be paid your normal wage on TAFE days. AitkenTech will pay all training fees and required textbooks.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Acknowledge &amp; confirm</div>
+    <div id="leave-checks"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">I confirm I have been informed of my leave entitlements, pay conditions, rights, and TAFE obligations as set out above.</p>
+    <div class="sig-wrap"><canvas id="lv-emp" height="120"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Austin Clarke &#8212; sign above</p>
+    <button class="btn btn-s" onclick="clrCanvas('lv-emp')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveLeave()">Save &amp; continue</button>
+</div>
+
+<!-- FAIR WORK -->
+<div class="page" id="pg-fairwork">
+  <div class="pnav"><button class="back" onclick="go('home')">&#8592;</button><h2>Fair Work statement</h2></div>
+  <div class="ss">The Fair Work Act 2009 requires all new employees to receive the Fair Work Information Statement before or as soon as possible after starting employment.</div>
+
+  <div class="card">
+    <div class="card-ttl">What the Fair Work Information Statement covers</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      &#8226; The National Employment Standards (NES)<br>
+      &#8226; Modern awards and enterprise agreements<br>
+      &#8226; Your right to request flexible working arrangements<br>
+      &#8226; Termination of employment<br>
+      &#8226; The role of the Fair Work Commission<br>
+      &#8226; The role of the Fair Work Ombudsman
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Read the full FWIS at:</strong><br>
+    fairwork.gov.au/employee-entitlements/national-minimum-wage-and-the-national-employment-standards/fair-work-information-statement
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Acknowledge receipt</div>
+    <div class="chk-row" onclick="tgSingle('fw-1',this)"><div class="chk-box" id="fw-1"></div><div class="chk-lbl">I confirm I have received the Fair Work Information Statement from AitkenTech.</div></div>
+    <div class="chk-row" onclick="tgSingle('fw-2',this)"><div class="chk-box" id="fw-2"></div><div class="chk-lbl">I have had the opportunity to read it and ask questions about its contents.</div></div>
+    <div class="chk-row" onclick="tgSingle('fw-3',this)"><div class="chk-box" id="fw-3"></div><div class="chk-lbl">I understand I can access the full statement at fairwork.gov.au at any time.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">Employee signature</div>
+    <div class="sig-wrap"><canvas id="fw-emp" height="120"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Austin Clarke &#8212; sign above</p>
+    <button class="btn btn-s" onclick="clrCanvas('fw-emp')">Clear</button>
+  </div>
+  <button class="btn btn-p" onclick="saveFairwork()">Save &amp; continue</button>
+</div>
+
+<!-- RECORDS -->
+<div class="page" id="pg-records">
+  <div style="padding-bottom:12px">
+    <div style="font-size:22px;font-weight:600;margin-bottom:4px">Completed records</div>
+    <div style="font-size:14px;color:var(--text2)">All saved onboarding documents</div>
+  </div>
+  <div id="rec-list"></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="go('home')" id="tb-home"><span class="tab-icon">&#127968;</span>Home</button>
+  <button class="tab-btn" onclick="go('records')" id="tb-rec"><span class="tab-icon">&#128193;</span>Records</button>
+</div>
+
+<script>
+var EP = 'https://formspree.io/f/mykljpyp';
+
+var SECTIONS = [
+  {id:'personal',  title:'Personal details',        sub:'Name, address, emergency contact',  icon:'&#128100;', page:'personal'},
+  {id:'induction', title:'WHS induction',           sub:'Safety topics &#8212; tick &amp; sign', icon:'&#9888;&#65039;',  page:'induction'},
+  {id:'conduct',   title:'Code of conduct',         sub:'Workplace standards &#8212; read &amp; sign', icon:'&#128203;', page:'conduct'},
+  {id:'leave',     title:'Leave &amp; entitlements',sub:'Pay, leave, rights &amp; TAFE',     icon:'&#128197;', page:'leave'},
+  {id:'fairwork',  title:'Fair Work statement',     sub:'Acknowledge receipt',               icon:'&#9878;&#65039;',  page:'fairwork'},
+];
+
+var IND_ITEMS = {
+  'Emergency procedures':[
+    'Emergency number: 000',
+    'Location of first aid kit (work vehicle)',
+    'Nearest hospital: Moruya District Hospital &#8212; (02) 4474 1888',
+    'Muster point identified on each site before work commences',
+    'If someone is injured: call 000, do not move them, call Aaron Aitken'
+  ],
+  'Site hazards &amp; rules':[
+    'Overhead powerlines &#8212; location and clearance distances explained',
+    'Underground services &#8212; Dial Before You Dig process explained',
+    'Asbestos identification and stop work procedure explained',
+    'No smoking, alcohol, or drugs on site &#8212; zero tolerance',
+    'Visitors must be accompanied at all times on site'
+  ],
+  'Electrical safety':[
+    'All electrical work to be performed by licensed persons only',
+    'Lock Out / Tag Out (LOTO) procedure explained and demonstrated',
+    'Do not touch or interfere with any equipment not assigned to you',
+    'Report any damaged tools, leads, or equipment immediately to Aaron',
+    'RCD protection required for all portable tools on site',
+    'Relevant SWMS must be read and signed before each job'
+  ],
+  'PPE requirements':[
+    'Mandatory PPE for each type of task explained',
+    'PPE issued today and usage demonstrated',
+    'PPE must be worn at all times when on site &#8212; no exceptions',
+    'Damaged or worn PPE to be reported and replaced immediately'
+  ],
+  'WHS rights &amp; obligations':[
+    'Right to cease unsafe work without fear of reprisal (WHS Act s.83)',
+    'Obligation to report all hazards, near misses, and incidents',
+    'Right to raise WHS issues without negative consequences',
+    'Obligation to follow all reasonable WHS instructions from Aaron',
+    'Incident and hazard reporting procedure explained'
+  ],
+  'Apprentice-specific':[
+    'Tasks Austin may NOT perform unsupervised &#8212; including all live electrical work',
+    'Always ask Aaron if unsure about a task &#8212; never guess or assume',
+    'Right to refuse any unsafe task without consequence',
+    'TAFE attendance obligations and current schedule discussed',
+    'Hours averaging arrangement explained &#8212; 38hrs/week over 4-week cycle',
+    'Drug &amp; alcohol policy explained &#8212; zero tolerance, random testing may apply on some sites'
+  ]
+};
+
+var COC_ITEMS = [
+  'I will treat all colleagues, clients, and members of the public with courtesy and respect at all times.',
+  'I will maintain the confidentiality of all client and business information.',
+  'I will arrive punctually and give appropriate notice of any absence to Aaron Aitken.',
+  'I will present in a tidy and professional manner appropriate to representing AitkenTech on client sites.',
+  'I will not consume alcohol or drugs before or during work, or while representing AitkenTech.',
+  'I will take reasonable care of all employer-provided tools, equipment, and PPE.',
+  'I will report any workplace incidents, near misses, or hazards to Aaron Aitken immediately.',
+  'I will not use my personal mobile phone excessively during work hours &#8212; urgent calls only.',
+  'I will conduct myself professionally on social media and not post content that could reflect negatively on AitkenTech.',
+  'I understand that serious misconduct may result in disciplinary action up to and including termination.'
+];
+
+var LEAVE_CHECKS = [
+  'I understand my pay rate is $15.67/hr and will be reviewed annually in line with Award variations each July.',
+  'I understand my ordinary hours are 38 hours per week (Mon&#8211;Fri, 0700&#8211;1530) averaged over a 4-week cycle.',
+  'I understand I am entitled to 4 weeks annual leave and 10 days personal/carer\'s leave per year.',
+  'I understand I must attend all scheduled TAFE/RTO sessions and that AitkenTech will pay my training fees.',
+  'I understand I can contact the Fair Work Ombudsman on 13 13 94 if I have concerns about my pay or conditions.'
+];
+
+var state = {done:{}, indChks:{}, cocChks:{}, lvChks:{}, fwChks:{}, recs:[]};
+try{state.recs=JSON.parse(localStorage.getItem('at_ob2_r')||'[]');}catch(e){}
+try{state.done=JSON.parse(localStorage.getItem('at_ob2_d')||'{}');}catch(e){}
+
+function sv(){
+  try{
+    localStorage.setItem('at_ob2_r',JSON.stringify(state.recs));
+    localStorage.setItem('at_ob2_d',JSON.stringify(state.done));
+  }catch(e){}
+}
+
+function post(data){
+  fetch(EP,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).catch(function(){});
+}
+
+function fd(d){
+  if(!d)return'—';
+  var p=d.split('-');var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(p[2])+' '+m[parseInt(p[1])-1]+' '+p[0];
+}
+
+function go(pg){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg-'+pg).classList.add('on');
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});
+  var m={home:'tb-home',records:'tb-rec'};
+  if(m[pg])document.getElementById(m[pg]).classList.add('on');
+  if(pg==='home')renderHome();
+  if(pg==='records')renderRecs();
+  if(pg==='induction')initInduction();
+  if(pg==='conduct')initConduct();
+  if(pg==='leave')initLeave();
+  if(pg==='fairwork')initFairwork();
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  var done=Object.keys(state.done).length;
+  var total=SECTIONS.length;
+  document.getElementById('home-sections').innerHTML=
+    '<div class="card" style="margin-bottom:16px">'
+    +'<div class="card-ttl">Progress &#8212; '+done+' of '+total+' complete</div>'
+    +'<div class="prog-bar"><div class="prog-fill" style="width:'+Math.round(done/total*100)+'%"></div></div>'
+    +(done===total?'<p style="font-size:13px;color:var(--teal-dk);font-weight:500">&#9989; All sections complete!</p>':'<p style="font-size:13px;color:var(--text2)">Complete all sections to finish your induction.</p>')
+    +'</div>'
+    +SECTIONS.map(function(s){
+      var isDone=state.done[s.id];
+      return'<button class="hero '+(isDone?'done':'teal')+'" onclick="go(\''+s.page+'\')">'
+        +'<div><div class="hc-lbl">'+s.icon+' '+(isDone?'Complete':'To do')+'</div>'
+        +'<div class="hc-ttl">'+s.title+'</div>'
+        +'<div class="hc-sub">'+s.sub+'</div></div>'
+        +'<span class="hc-arr">'+(isDone?'&#10003;':'&#8250;')+'</span>'
+        +'</button>';
+    }).join('');
+}
+
+function initInduction(){
+  document.getElementById('ind-checks').innerHTML=Object.keys(IND_ITEMS).map(function(sec){
+    var items=IND_ITEMS[sec];
+    return'<div class="card"><div class="card-ttl">'+sec+'</div>'
+      +items.map(function(item,i){
+        var k=sec+i;
+        var on=state.indChks[k];
+        return'<div class="chk-row" onclick="tgChk(\'ind\',\''+k+'\',this)">'
+          +'<div class="chk-box'+(on?' on':'')+'" id="ic-'+k+'">'+(on?'&#10003;':'')+'</div>'
+          +'<div class="chk-lbl'+(on?' done':'')+'" id="il-'+k+'">'+item+'</div>'
+          +'</div>';
+      }).join('')+'</div>';
+  }).join('');
+  initCanvas('ind-emp');initCanvas('ind-aa');
+}
+
+function initConduct(){
+  document.getElementById('conduct-checks').innerHTML=
+    '<div class="card-ttl">AitkenTech code of conduct</div>'
+    +COC_ITEMS.map(function(item,i){
+      var on=state.cocChks['coc'+i];
+      return'<div class="chk-row" onclick="tgChk(\'coc\',\'coc'+i+'\',this)">'
+        +'<div class="chk-box'+(on?' on':'')+'" id="cc-coc'+i+'">'+(on?'&#10003;':'')+'</div>'
+        +'<div class="chk-lbl'+(on?' done':'')+'" id="cl-coc'+i+'">'+item+'</div>'
+        +'</div>';
+    }).join('');
+  initCanvas('coc-emp');
+}
+
+function initLeave(){
+  document.getElementById('leave-checks').innerHTML=LEAVE_CHECKS.map(function(item,i){
+    var on=state.lvChks['lv'+i];
+    return'<div class="chk-row" onclick="tgChk(\'lv\',\'lv'+i+'\',this)">'
+      +'<div class="chk-box'+(on?' on':'')+'" id="lc-lv'+i+'">'+(on?'&#10003;':'')+'</div>'
+      +'<div class="chk-lbl'+(on?' done':'')+'" id="ll-lv'+i+'">'+item+'</div>'
+      +'</div>';
+  }).join('');
+  initCanvas('lv-emp');
+}
+
+function initFairwork(){
+  initCanvas('fw-emp');
+}
+
+function tgChk(group, k, row){
+  var store = group==='ind'?state.indChks:group==='coc'?state.cocChks:group==='lv'?state.lvChks:state.fwChks;
+  store[k]=!store[k];
+  var box=document.getElementById('ic-'+k)||document.getElementById('cc-'+k)||document.getElementById('lc-'+k);
+  var lbl=document.getElementById('il-'+k)||document.getElementById('cl-'+k)||document.getElementById('ll-'+k);
+  if(box){if(store[k]){box.classList.add('on');box.innerHTML='&#10003;';}else{box.classList.remove('on');box.innerHTML='';}}
+  if(lbl){lbl.classList.toggle('done',store[k]);}
+}
+
+function tgSingle(id,row){
+  var box=document.getElementById(id);
+  var on=box.classList.toggle('on');
+  box.innerHTML=on?'&#10003;':'';
+  state.fwChks[id]=on;
+  row.querySelector('.chk-lbl').classList.toggle('done',on);
+}
+
+function savePersonal(){
+  var rec={section:'personal',ts:Date.now(),
+    name:document.getElementById('p-name').value||'—',
+    pref:document.getElementById('p-pref').value||'—',
+    dob:document.getElementById('p-dob').value,
+    mobile:document.getElementById('p-mob').value||'—',
+    email:document.getElementById('p-email').value||'—',
+    addr:document.getElementById('p-addr').value||'—',
+    ec_name:document.getElementById('ec-name').value||'—',
+    ec_rel:document.getElementById('ec-rel').value||'—',
+    ec_mob:document.getElementById('ec-mob').value||'—',
+    ec_home:document.getElementById('ec-home').value||'—'
+  };
+  state.recs.unshift(rec);state.done['personal']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding &#8212; Personal Details: '+rec.name,
+    form_type:'Onboarding &#8212; Personal & Emergency Contact Details',
+    employee_name:rec.name, preferred_name:rec.pref,
+    date_of_birth:fd(rec.dob), mobile:rec.mobile, email:rec.email, address:rec.addr,
+    emergency_contact_name:rec.ec_name, emergency_contact_relationship:rec.ec_rel,
+    emergency_contact_mobile:rec.ec_mob, emergency_contact_home:rec.ec_home,
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('personal','Personal details saved and emailed to AitkenTech.');
+}
+
+function saveInduction(){
+  var total=Object.values(IND_ITEMS).reduce(function(a,v){return a+v.length;},0);
+  var checked=Object.values(state.indChks).filter(Boolean).length;
+  var detail=Object.keys(IND_ITEMS).map(function(sec,si){
+    return sec+':\n'+IND_ITEMS[sec].map(function(item,i){
+      var k=sec+i;
+      return(state.indChks[k]?'✓ ':'✗ ')+item.replace(/&#\d+;/g,'').replace(/&amp;/g,'&').replace(/&mdash;/g,'—');
+    }).join('\n');
+  }).join('\n\n');
+  var rec={section:'induction',ts:Date.now(),checked:checked,total:total};
+  state.recs.unshift(rec);state.done['induction']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — WHS Induction Complete: Austin Clarke',
+    form_type:'Onboarding — WHS Site Induction',
+    employee_name:'Austin Clarke', inducted_by:'Aaron Aitken',
+    date:new Date().toLocaleDateString('en-AU'),
+    items_covered:checked+' of '+total,
+    induction_detail:detail,
+    employee_signed:'Yes', employer_signed:'Yes (Aaron Aitken)',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('induction','WHS induction completed and emailed to AitkenTech.');
+}
+
+function saveConduct(){
+  var total=COC_ITEMS.length;
+  var checked=Object.values(state.cocChks).filter(Boolean).length;
+  var rec={section:'conduct',ts:Date.now(),checked:checked,total:total};
+  state.recs.unshift(rec);state.done['conduct']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — Code of Conduct Signed: Austin Clarke',
+    form_type:'Onboarding — Code of Conduct Acknowledgement',
+    employee_name:'Austin Clarke',
+    items_acknowledged:checked+' of '+total,
+    all_items_confirmed:checked===total?'Yes':'No — '+checked+' of '+total+' ticked',
+    employee_signed:'Yes',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('conduct','Code of conduct acknowledgement saved and emailed to AitkenTech.');
+}
+
+function saveLeave(){
+  var total=LEAVE_CHECKS.length;
+  var checked=Object.values(state.lvChks).filter(Boolean).length;
+  var rec={section:'leave',ts:Date.now(),checked:checked,total:total};
+  state.recs.unshift(rec);state.done['leave']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — Leave & Entitlements Acknowledged: Austin Clarke',
+    form_type:'Onboarding — Leave, Pay & Entitlements Acknowledgement',
+    employee_name:'Austin Clarke',
+    pay_rate:'$15.67/hr — Junior Apprentice 1st Year',
+    ordinary_hours:'38 hrs/week Mon-Fri 0700-1530 (4-week averaging)',
+    annual_leave:'4 weeks per year',
+    personal_leave:'10 days per year',
+    superannuation:'11.5% to HOSTPLUS',
+    items_acknowledged:checked+' of '+total,
+    employee_signed:'Yes',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('leave','Leave and entitlements acknowledgement saved and emailed to AitkenTech.');
+}
+
+function saveFairwork(){
+  var checked=['fw-1','fw-2','fw-3'].filter(function(id){return state.fwChks[id];}).length;
+  var rec={section:'fairwork',ts:Date.now(),checked:checked};
+  state.recs.unshift(rec);state.done['fairwork']=true;sv();
+  post({
+    _subject:'AitkenTech Onboarding — Fair Work Statement Acknowledged: Austin Clarke',
+    form_type:'Onboarding — Fair Work Information Statement Acknowledgement',
+    employee_name:'Austin Clarke',
+    fwis_received:'Yes',
+    items_confirmed:checked+' of 3',
+    employee_signed:'Yes',
+    fair_work_ombudsman_contact:'13 13 94',
+    timestamp:new Date().toLocaleString('en-AU')
+  });
+  showSuccess('fairwork','Fair Work acknowledgement saved and emailed to AitkenTech.');
+}
+
+function showSuccess(section, msg){
+  var pg=document.getElementById('pg-'+section);
+  pg.innerHTML='<div class="success">'
+    +'<div class="suc-icon">&#9989;</div>'
+    +'<div class="suc-ttl">Saved!</div>'
+    +'<div class="suc-sub">'+msg+'</div>'
+    +'<button class="btn btn-p" onclick="go(\'home\')">Back to home</button>'
+    +'<button class="btn btn-s" onclick="go(\'records\')">View records</button>'
+    +'</div>';
+  window.scrollTo(0,0);
+}
+
+function renderRecs(){
+  var el=document.getElementById('rec-list');
+  if(!state.recs.length){el.innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px">&#128193;</div>No records yet. Complete the onboarding steps to see them here.</div>';return;}
+  var lb={personal:'Personal details',induction:'WHS induction',conduct:'Code of conduct',leave:'Leave & entitlements',fairwork:'Fair Work statement'};
+  el.innerHTML=state.recs.map(function(r){
+    var d=new Date(r.ts).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+    var detail='';
+    if(r.section==='personal')detail=r.name;
+    if(r.section==='induction')detail=r.checked+'/'+r.total+' items covered';
+    if(r.section==='conduct')detail=r.checked+'/'+r.total+' items acknowledged';
+    if(r.section==='leave')detail=r.checked+'/'+r.total+' items confirmed';
+    if(r.section==='fairwork')detail=r.checked+'/3 items confirmed';
+    return'<div class="rec-item"><div class="rec-type">'+lb[r.section]+'</div><div class="rec-name">'+detail+'</div><div class="rec-sub">Saved '+d+'</div></div>';
+  }).join('');
+}
+
+function initCanvas(id){
+  var c=document.getElementById(id);
+  if(!c)return;
+  c.width=c.offsetWidth||320;
+  sCanvas(c);
+}
+
+function sCanvas(c){
+  var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.strokeStyle='#1A1A2E';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  var dr=false,lx,ly;
+  function pos(e){var r=c.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return[t.clientX-r.left,t.clientY-r.top];}
+  c.onpointerdown=function(e){dr=true;var p=pos(e);lx=p[0];ly=p[1];c.setPointerCapture(e.pointerId);};
+  c.onpointermove=function(e){if(!dr)return;var p=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p[0],p[1]);ctx.stroke();lx=p[0];ly=p[1];};
+  c.onpointerup=function(){dr=false;};
+  c.onpointerleave=function(){dr=false;};
+}
+
+function clrCanvas(id){var c=document.getElementById(id);c.width=c.offsetWidth||320;sCanvas(c);}
+
+var aT=null;
+function aLookup(fid){
+  var inp=document.getElementById(fid);
+  var drop=document.getElementById(fid+'-drop');
+  var q=inp.value.trim();
+  drop.style.display='none';drop.innerHTML='';
+  if(q.length<4)return;
+  clearTimeout(aT);
+  aT=setTimeout(function(){
+    fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=au&q='+encodeURIComponent(q))
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data||!data.length)return;
+        drop.innerHTML=data.map(function(r){
+          var a=r.address||{};
+          var num=a.house_number||'';var road=a.road||'';
+          var main=(num&&road)?num+' '+road:road||r.display_name.split(',')[0];
+          var suburb=a.suburb||a.town||a.city||a.village||a.municipality||'';
+          var state2=a.state||'';var post=a.postcode||'';
+          var sub=[suburb,state2,post].filter(Boolean).join(' ');
+          var full=sub?main+', '+sub:main;
+          return'<div class="addr-opt" data-val="'+full.replace(/"/g,'&quot;')+'" onclick="aPick(\''+fid+'\',this)"><b>'+main+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</div>';
+        }).join('');
+        drop.style.display='block';
+      })
+      .catch(function(){});
+  },600);
+}
+function aPick(fid,el){document.getElementById(fid).value=el.getAttribute('data-val');document.getElementById(fid+'-drop').style.display='none';}
+document.addEventListener('click',function(e){document.querySelectorAll('.addr-drop').forEach(function(d){if(d.style.display==='block'&&!d.parentElement.contains(e.target))d.style.display='none';});});
+
+renderHome();
+</script>
+</body>
+</html>
